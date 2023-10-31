@@ -1,0 +1,42 @@
+def fa2dic(fastafile):    # convert fasta into dictionary
+    with open(fastafile)as file:
+        lines = file.readlines()
+    name = ''
+    seq = {}
+    for line in lines:
+        if line.startswith(">"):
+            if name:
+                seq[name]=content
+            line1 = line[1:]
+            name = line1.split()[0]
+            content = ''
+        else:
+            content += line
+    return seq
+
+def muti_seq_len(seq):  
+# convert dict (with key:seq_name; value:seq_content) into dict (with key:seq_name; value:seq_content) 
+    seq_len = {}
+    for name, content in seq.items():
+        seq_len[name] = len(content)
+    return seq_len
+
+def max_seq(seq_len): # figure out the seq ids with the longest seq_content
+    split = '-'
+    dic = {}
+    longest_ids = []
+    group_name = next(iter(seq_len)).split(split)[0] # 将第一个key赋值给groupname
+    for name, len in seq_len.items():
+        if name == group_name:
+            dic[name]=len 
+        else:
+            longest_ids.append(max(dic, key=dic.get))
+            group_name = name.split(split)[0]
+
+    return longest_ids
+
+def head_dic(dic, n): # print first n items of the dictionary
+    for i, (k, v) in enumerate(dic.items()):
+        if i in range(0, n):
+            print(k, v)
+
